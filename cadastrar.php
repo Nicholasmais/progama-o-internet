@@ -1,5 +1,4 @@
 <?php 
-require_once "pessoa.php";
 require_once "banco.php";
 
 $nome = $_POST['nome'];
@@ -19,5 +18,12 @@ $pessoa->set_nascimento($nascimento);
 
 $banco = new Banco();
 
-$banco->add_pessoa($pessoa);
+$res = $banco->add_pessoa($pessoa);
+
+if(array_values($res)[1]){
+  header("location: index.php?status=1");
+}
+else{
+  header("location: index.php?status=0");
+}
 ?>

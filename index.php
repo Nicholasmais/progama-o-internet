@@ -1,3 +1,15 @@
+<?php 
+if (isset($_GET["status"])){
+    $res = isset($_GET["status"]);
+    if ($res){
+      echo "Sucesso";
+    }
+    else{
+      echo "Erro";
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,5 +56,6 @@
       <button>Cadastrar</button>
     </div>
   </form>
+  <a href="lista.php">Ver cadastros</a>
 </body>
 </html>

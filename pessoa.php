@@ -1,11 +1,20 @@
 <?php 
 class Pessoa{
+  private $codigo;
   private $nome;
   private $sobrenome;
   private $email;
   private $senha;
   private $sexo;
-  private $nascimento; 
+  private $nascimento;
+
+  public function get_codigo(){
+    return $this->codigo;    
+  }
+
+  public function set_codigo($codigo){
+    $this->codigo = $codigo;    
+  }
 
   public function get_nome(){
     return $this->nome;    
@@ -53,6 +62,10 @@ class Pessoa{
 
   public function set_nascimento($nascimento){
     $this->nascimento = $nascimento;    
+  }
+
+  public function __toString(){
+    return "{Nome: " . $this->nome . ", Sobrenome: " . $this->sobrenome . ", Email: " . $this->email . ", Senha: " . $this->senha . ", Sexo: " . $this->sexo . ", Nascimento: " . $this->nascimento . "}";
   }
 }
 
