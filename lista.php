@@ -29,7 +29,7 @@
               echo "<td>" .$pessoa->get_senha(). "</td>";
               echo "<td>" .$pessoa->get_sexo(). "</td>";
               echo "<td>" .$pessoa->get_nascimento(). "</td>";
-              echo "<td><button onlick='".$banco->excluir($pessoa->get_codigo())."'>Excluir </td>";
+              echo "<td><a href='excluir.php?id=".$pessoa->get_codigo()."'>Excluir</a></td>";
               echo "</tr>";              
             }
           ?>          

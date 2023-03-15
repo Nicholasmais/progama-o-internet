@@ -68,10 +68,9 @@ class Banco{
   }
 
   public function excluir($id){
-  echo $id;
-    // $stmt = $this->con->prepare("DELETE from pessoa where codigo = ?");
-  // $stmt->bind_param("s", $id);
-  // $stmt->execute();
+    $stmt = $this->con->prepare("DELETE from pessoa where codigo = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
   }
 }
 ?>
