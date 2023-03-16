@@ -46,6 +46,32 @@ class Banco{
     }
   }
 
+  public function update_pessoa($code, $pes){
+    try{
+      $nome = $pes->get_nome();
+      $sobrenome = $pes->get_sobrenome();
+      $email = $pes->get_email();
+      $senha = $pes->get_senha();
+      $sexo = $pes->get_sexo();
+      $nascimento = $pes->get_nascimento();
+      $stmt = $this->con->prepare("update pessoa set nome=?, sobrenome=?, email=?, senha=?, sexo=?, data_nascimento=? where codigo = ?;");
+      $stmt->bind_param(
+        "sssssss",
+        $nome,
+        $sobrenome,
+        $email,
+        $senha,
+        $sexo,
+        $nascimento,
+        $code
+      );
+      return ["sucesso"=>$stmt->execute(), "status"=>1];
+    }
+    catch (Exception $e){
+      return ["erro"=>$e, "status"=>0];
+    }
+  }
+
   public function get_pessoa(){   
     $stmt = $this->con->prepare("Select * from pessoa");
     $stmt->execute();
@@ -65,6 +91,23 @@ class Banco{
         $i++;
     }
     return $pessoa_array;
+  }
+
+  public function get_pessoa_by_id($id){   
+    $stmt = $this->con->prepare("Select * from pessoa where codigo = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();        
+    $linha = mysqli_fetch_object($result);    
+    $pessoa = new Pessoa();
+    $pessoa->set_codigo($linha->codigo);
+    $pessoa->set_nome($linha->nome);
+    $pessoa->set_sobrenome($linha->sobrenome);
+    $pessoa->set_email($linha->email);
+    $pessoa->set_senha($linha->senha);
+    $pessoa->set_sexo($linha->sexo);
+    $pessoa->set_nascimento($linha->data_nascimento);
+    return $pessoa;       
   }
 
   public function excluir($id){

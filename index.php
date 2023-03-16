@@ -17,6 +17,9 @@ if (isset($_GET["status"])){
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    <?php include 'cadastro.css'; ?>
+  </style>
 </head>
 <body>
   <form action="cadastrar.php" method="post">
@@ -43,7 +46,7 @@ if (isset($_GET["status"])){
         <input id="input-senha" type="password" name="senha">
       </div>
       <div class="sexo">
-        <label for="input-sexo">Nome</label>
+        <label for="input-sexo">Sexo</label>
         <select id="select-sexo" name="select">
           <option value="M">Masculino</option>
           <option value="F">Feminino</option>

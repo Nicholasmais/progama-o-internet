@@ -2,6 +2,14 @@
  include "banco.php";
  $banco = new Banco();
  $pessoas = $banco->get_pessoa();
+  if (isset($_GET["status"])){
+    if($_GET["status"]){
+      echo "Sucesso";
+    }
+    else{
+      echo "ERRO";
+    }
+  } 
 ?>
 <html>
     <head>
@@ -29,7 +37,10 @@
               echo "<td>" .$pessoa->get_senha(). "</td>";
               echo "<td>" .$pessoa->get_sexo(). "</td>";
               echo "<td>" .$pessoa->get_nascimento(). "</td>";
-              echo "<td><a href='excluir.php?id=".$pessoa->get_codigo()."'>Excluir</a></td>";
+              echo "<td>
+                      <a href='editar.php?id=".$pessoa->get_codigo()."'>Editar</a>                
+                      <a href='excluir.php?id=".$pessoa->get_codigo()."'>Excluir</a>
+                    </td>";
               echo "</tr>";              
             }
           ?>          
