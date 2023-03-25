@@ -33,13 +33,20 @@ body{
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+.radio-square > input:hover{
+  cursor: pointer;
+}
+.select_type_game > label{
+  width: 5rem;
+}
 .select_type_game > label:first-of-type {
   display: flex;  
   align-items: center;
+  justify-content: center;
   background-color: aliceblue;
   padding: 4px;
   border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-bottom-left-radius: 8px;  
 }
 .select_type_game > label:last-of-type {
   display: flex;  
