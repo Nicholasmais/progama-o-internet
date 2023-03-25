@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="jogo_velha.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header"> 
+      <div class="select_type_game">
+        <label for="dupla">Dupla</label>
+        <div class="radio-square">
+          <input type="radio" name="is_player" id="dupla" checked>
+        </div>
+        <div class="radio-square">
+          <input type="radio" name="is_player" id="bot">
+        </div>
+          <label for="bot">Computador</label>
+      </div>
+      <span class="turno"></span>
+    </header>
+    <div class="buttons">
+      <div class="espaco1"></div>
+      <div class="espaco2"></div>
+      <div class="espaco3"></div>
+      <div class="espaco4"></div>
+      <div class="espaco5"></div>
+      <div class="espaco6"></div>
+      <div class="espaco7"></div>
+      <div class="espaco8"></div>
+      <div class="espaco9"></div>
+    </div>
+    <div class="pontuacoes">
+      <div class="pontuacao">
+        Jogador 1 => <div class="jogador_1"></div> Pontos
+      </div>
+      <div class="pontuacao">
+      Jogador 2 => <div class="jogador_2"></div> Pontos
+      </div>
+    </div>
+    <div class="reset">
+      <button onclick="game.toggle_name()" id="game-btn" class="start_end_game">Começar</button>
+      <button onclick="game.start_game()" id="reset-game" disabled>Começar novamente</button>
+    </div>
+    </div>
+
+  <script>
+    class StartGame{
+      constructor(){
+        this.jogo_Ativo = false;
+        this.jogo_rodando = false;
+
+        this.player1 = [];
+        this.player2 = [];
+
+        this.player1_score = 0;
+        this.player2_score = 0;
+
+        this.turn = 1;
+        this.jogador = "Jogador 1";
+        this.span_player = document.querySelector('.turno');
+      
+        this.player1_score_div = document.querySelector(".jogador_1")
+        this.player2_score_div = document.querySelector(".jogador_2")
+
+        this.player1_score_div.innerHTML = this.player1_score;
+        this.player2_score_div.innerHTML = this.player2_score;
+      }
+
+      add_event_listeners_player(){
+        this.remove_all_event_listeners();
+        for (let i = 0; i < 9; i++){
+          const div = document.querySelector(`.espaco${i+1}`);
+          div.addEventListener('click', () =>{
+            if (this.jogo_rodando){
+              if (!(this.player1.includes(i+1)) && !(this.player2.includes(i+1))){
+                if (this.turn % 2 != 0){
+                  this.player1.push(i+1);
+                  div.innerHTML = "X"
+                }
+                else{
+                  this.player2.push(i+1);
+                  div.innerHTML = "O"
+                }
+                this.check_winner();
+                if (this.jogo_rodando){
+                  this.jogador = (this.jogador === "Jogador 1") ? "Jogador 2" : "Jogador 1";
+                  this.span_player.innerHTML = `É a vez de ${this.jogador}`;
+                }
+                this.turn++;
+              }          
+
+              let numFilledSpaces = this.player1.length + this.player2.length;
+              if (numFilledSpaces === 9) {
+                this.span_player.innerHTML = 'Empate!';
+                this.jogo_rodando = false;
+              }
+            }
+          })
+        }
+      }
+
+      add_event_listeners_bot(){
+        this.remove_all_event_listeners();
+        for (let i = 0; i < 9; i++){
+          const div = document.querySelector(`.espaco${i+1}`);
+          div.addEventListener('click', () =>{
+            if (this.jogo_rodando){
+              if (!(this.player1.includes(i+1)) && !(this.player2.includes(i+1))){
+                this.player1.push(i+1);
+                this.array = this.array.filter((val) => val != i+1);
+                div.innerHTML = "X";
+                this.check_winner();
+                if (this.jogo_rodando){
+                  this.jogador = (this.jogador === "Jogador 1") ? "Bot" : "Jogador 1";
+                  this.span_player.innerHTML = `É a vez de ${this.jogador}`;  
+                }                 
+                if (this.array.length !== 0 && this.jogo_rodando){
+                  const randomIndex = Math.floor(Math.random() * this.array.length);
+                  const randomValue = this.array[randomIndex];                
+                  if (!(this.player1.includes(randomValue)) && !(this.player2.includes(randomValue))){
+                    const div2 = document.querySelector(`.espaco${randomValue}`);
+                    this.player2.push(randomValue);
+                    this.array = this.array.filter((val) => val != randomValue);
+                    div2.innerHTML = "O"                
+                    this.check_winner();
+                    this.jogador = (this.jogador === "Jogador 1") ? "Bot" : "Jogador 1";
+                  }
+                }                
+              }
+            }
+          })
+        }
+      }
+
+      check_winner(){
+        let numFilledSpaces = this.player1.length + this.player2.length;
+        if (numFilledSpaces === 9) {
+          this.span_player.innerHTML = 'Empate!';
+          this.jogo_rodando = false;
+        }
+
+        for (let i = 1; i <= 3; i++){
+          const row1 = document.querySelector(`.espaco${(3*i-2)}`);
+          const row2 = document.querySelector(`.espaco${(3*i-2)+1}`);
+          const row3 = document.querySelector(`.espaco${(3*i-2)+2}`);
+
+          const col1 = document.querySelector(`.espaco${i}`);
+          const col2 = document.querySelector(`.espaco${i+3}`);
+          const col3 = document.querySelector(`.espaco${i+6}`);
+
+          const check_filled_row = row1.innerHTML != '' && row2.innerHTML != '' && row3.innerHTML != ''
+          const check_row = row1.innerHTML == row2.innerHTML && row2.innerHTML == row3.innerHTML;
+
+          const check_filled_col = col1.innerHTML != '' && col2.innerHTML != '' && col3.innerHTML != ''
+          const check_col = col1.innerHTML == col2.innerHTML && col2.innerHTML == col3.innerHTML;
+
+          if (check_filled_row || check_filled_col){
+            if (check_row || check_col){
+              this.span_player.innerHTML = `${this.jogador} ganhou!`;
+              this.jogador === "Jogador 1" ? this.player1_score++ : this.player2_score++;
+              this.player1_score_div.innerHTML = this.player1_score;
+              this.player2_score_div.innerHTML = this.player2_score;
+              this.jogo_rodando = false;
+            }    
+          }
+        }
+      
+        const val1 = document.querySelector(".espaco1").innerHTML;
+        const val3 = document.querySelector(".espaco3").innerHTML;
+        const val5 = document.querySelector(".espaco5").innerHTML;
+        const val7 = document.querySelector(".espaco7").innerHTML;
+        const val9 = document.querySelector(".espaco9").innerHTML;
+      
+        const check_filled_diagonal_1 = val1 != "" && val5 != "" && val9 != "";
+        const check_filled_diagonal_2 = val3 != "" && val5 != "" && val7 != "";
+
+        const check_diagonal_1 = val1 == val5 && val5 == val9;
+        const check_diagonal_2 = val3 == val5 && val5 == val7;
+
+        if (check_filled_diagonal_1 || check_filled_diagonal_2){
+          if (check_diagonal_1 || check_diagonal_2){
+            this.span_player.innerHTML = `${this.jogador} ganhou!`;
+            this.jogador === "Jogador 1" ? this.player1_score++ : this.player2_score++;
+            this.player1_score_div.innerHTML = this.player1_score;
+            this.player2_score_div.innerHTML = this.player2_score;
+            this.jogo_rodando = false;
+          }    
+        }
+      }
+
+      start_game(){
+        this.jogo_rodando = true;
+        this.jogo_Ativo = true;
+
+        this.array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        this.player1 = [];
+        this.player2 = [];
+    
+        this.jogador = "Jogador 1";
+
+        this.turn = 1;
+
+        this.span_player.innerHTML = `É a vez de ${this.jogador}`;
+        document.getElementById("dupla").checked ? 
+          (this.add_event_listeners_player()
+          )
+          :
+          (this.add_event_listeners_bot()
+          );
+        
+        const radioButtons = document.querySelectorAll('.select_type_game input[type="radio"]');
+        radioButtons.forEach((button) => {
+          button.disabled = true;
+        })
+        for (let i = 0; i < 9; i++){
+          const div = document.querySelector(`.espaco${i+1}`);
+          div.innerHTML = "";
+        }
+      }
+
+      end_game(){
+        this.jogo_rodando = false;
+        this.jogo_Ativo = false;
+
+        this.player1 = [];
+        this.player2 = [];
+
+        this.player1_score = 0;
+        this.player2_score = 0;
+
+        this.player1_score_div.innerHTML = this.player1_score;
+        this.player2_score_div.innerHTML = this.player2_score;
+
+        this.span_player.innerHTML = ``;
+
+        const radioButtons = document.querySelectorAll('.select_type_game input[type="radio"]');
+        radioButtons.forEach((button) => {
+          button.disabled = false;
+        });
+        for (let i = 0; i < 9; i++){
+          const div = document.querySelector(`.espaco${i+1}`);
+          div.innerHTML = "";
+        }
+      }
+    
+      toggle_name(){
+        !this.jogo_Ativo ? 
+          (
+            this.start_game(),
+            document.getElementById("game-btn").textContent = "Terminar",
+            document.getElementById("reset-game").disabled = false
+          ) : 
+          (
+            this.end_game(),
+            document.getElementById("game-btn").textContent = "Começar",
+            document.getElementById("reset-game").disabled = true
+          )
+      }
+    
+      remove_all_event_listeners(){
+        for (let i = 0; i < 9; i++){
+          const div = document.querySelector(`.espaco${i+1}`);
+          const newDiv = div.cloneNode(true);
+          div.parentNode.replaceChild(newDiv, div);
+        }
+      }      
+    }
+    const game = new StartGame();
+  </script>
+</body>
+</html>
