@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container{
+      width: 80vw;
+      height: 70vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: beige;
+    }
+
+    .torre_1, .torre_2, .torre_3{
+      height: 100%;
+      width: 25%;
+      display: flex;
+      align-items: end;
+      position: relative;
+    }
+    .base{
+      width: 100%;
+      height:5%;
+      background-color: black;
+      z-index: 1;
+    }
+    .haste{
+      height: 75%;
+      width: 5%;
+      position: absolute;
+      z-index: 0;
+      margin-left: 50%;
+      background-color: black;
+    }
+    .disco {
+      position: absolute;
+      height: 20px;
+      z-index: 2;
+    }    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="torre_1">
+      <div class="base"></div>
+      <div class="haste"></div>
+    </div>
+    <div class="torre_2">
+      <div class="base"></div>
+      <div class="haste"></div>
+    </div>
+    <div class="torre_3">
+      <div class="base"></div>
+      <div class="haste"></div>
+    </div>
+  </div>
+  <input type="number" name="num_disk" id="num_disk" value="3">
+  <button class="botao">Desenhar</button>
+  <script>
+    const btn = document.querySelector(".botao");
+    btn.addEventListener('click', () =>{
+      const num_disks = document.querySelector("#num_disk").value;
+
+      for (let i = 0; i < num_disks; i++){
+        const disco = document.createElement("div");
+        disco.className = "disco";
+
+        let left_margin;        
+        i === 0 ? left_margin = "0%" : left_margin = "5%/2";
+        let width = -75/num_disks * i + 100;
+
+        let red = Math.floor(Math.random()*256);
+        let green = Math.floor(Math.random()*256);
+        let blue = Math.floor(Math.random()*256);
+
+        disco.style.cssText = `
+          width: ${width}%;
+          left: calc(50% - ${width}%/2 + ${left_margin});
+          bottom: calc(5% + ${20*i}px);
+          background-color: rgb(${red},${green},${blue});
+        `
+
+        const torre_1 = document.querySelector(".torre_1");
+        torre_1.appendChild(disco);
+        }
+    })
+
+  </script>
+</body>
+</html>
