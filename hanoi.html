@@ -16,6 +16,16 @@
       background-color: beige;
     }
 
+    .container:nth-of-type(2){
+      width: 80vw;
+      height: 50px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: transparent;
+    }
+
     .torre_1, .torre_2, .torre_3{
       height: 100%;
       width: 25%;
@@ -34,19 +44,25 @@
       width: 5%;
       position: absolute;
       z-index: 0;
-      margin-left: 50%;
+      margin-left: calc(50% - 5%/2);
       background-color: black;
+      z-index: 3;
     }
     .disco {
       position: absolute;
-      height: 20px;
       z-index: 2;
-    }    
+    }
+    .container:nth-of-type(2) > .torre_1, .container:nth-of-type(2) > .torre_2, .container:nth-of-type(2) .torre_3{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="torre_1">
+    <div class="torre_1"> 
       <div class="base"></div>
       <div class="haste"></div>
     </div>
@@ -59,37 +75,122 @@
       <div class="haste"></div>
     </div>
   </div>
+  <div class="container">
+    <div class="torre_1">
+      <button onclick="change_haste(1,2)">2</button>
+      <button onclick="change_haste(1,3)">3</button>
+    </div>
+    <div class="torre_2">
+      <button onclick="change_haste(2,1)">1</button>
+      <button onclick="change_haste(2,3)">3</button>
+    </div>
+    <div class="torre_3">
+      <button onclick="change_haste(3,1)">1</button>
+      <button onclick="change_haste(3,2)">2</button>
+    </div>
+  </div>
   <input type="number" name="num_disk" id="num_disk" value="3">
   <button class="botao">Desenhar</button>
-  <script>
+  <script>    
+    let pilha_1 = [];
+    let pilha_2 = [];
+    let pilha_3 = [];
     const btn = document.querySelector(".botao");
     btn.addEventListener('click', () =>{
+      pilha_1 = [];
+      pilha_2 = [];
+      pilha_3 = [];
+      const divs = document.querySelectorAll('.disco');
+      divs.forEach(div => {
+        div.remove();
+      });
       const num_disks = document.querySelector("#num_disk").value;
-
+      const haste = document.querySelector(".haste");
+      const base = document.querySelector(".base")
+      disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);   
       for (let i = 0; i < num_disks; i++){
         const disco = document.createElement("div");
-        disco.className = "disco";
+        disco.className = `disco disco_${i+1}`;
 
-        let left_margin;        
-        i === 0 ? left_margin = "0%" : left_margin = "5%/2";
-        let width = -75/num_disks * i + 100;
+        let width = -75/num_disks * i + 100;        
 
         let red = Math.floor(Math.random()*256);
         let green = Math.floor(Math.random()*256);
         let blue = Math.floor(Math.random()*256);
 
+        //let red = 172/num_disks*i+ 48;
+        //let green = -245/num_disks*i+ 232;
+        //let blue = -210/num_disks*i+ 130;
+
         disco.style.cssText = `
           width: ${width}%;
-          left: calc(50% - ${width}%/2 + ${left_margin});
-          bottom: calc(5% + ${20*i}px);
+          margin-left: calc(50% - ${width}%/2);
+          bottom: calc(5% + ${disco_heights*i}px);
           background-color: rgb(${red},${green},${blue});
+          height:${disco_heights}px;
         `
-
+        pilha_1.push(disco);
+        console.log(pilha_1);
         const torre_1 = document.querySelector(".torre_1");
         torre_1.appendChild(disco);
         }
     })
 
+    const change_haste = (atual, dest) => {
+      let disco;
+      switch (atual){
+        case 1:
+          disco = pilha_1.pop();
+          disco.remove();
+          switch (dest){
+            case 2:
+              pilha_2.push(disco);
+              const torre_2 = document.querySelector(".torre_2");
+              torre_2.appendChild(disco);
+              break;
+            case 3:
+              pilha_3.push(disco);
+              const torre_3 = document.querySelector(".torre_3");
+              torre_3.appendChild(disco);
+              break;
+          }
+          break;
+        case 2:
+          disco = pilha_2.pop();
+          switch (dest){
+            case 1:
+              pilha_1.push(disco);
+              const torre_1 = document.querySelector(".torre_1");
+              torre_1.appendChild(disco);
+              break;
+            case 3:
+              pilha_3.push(disco);
+              const torre_3 = document.querySelector(".torre_3");
+              torre_3.appendChild(disco);
+              break;
+          }
+          break;
+        case 3:
+          disco = pilha_3.pop();
+          switch (dest){
+            case 1:
+              pilha_1.push(disco);
+              const torre_1 = document.querySelector(".torre_1");
+              torre_1.appendChild(disco);
+              break;
+            case 2:
+              pilha_2.push(disco);
+              const torre_2 = document.querySelector(".torre_2");
+              torre_2.appendChild(disco);
+              break;
+          }
+          break;
+      }      
+      console.log("pilhas:");
+      console.log(pilha_1);
+      console.log(pilha_2);
+      console.log(pilha_3);
+    }
   </script>
 </body>
 </html>
