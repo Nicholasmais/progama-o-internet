@@ -8,12 +8,12 @@
   <style>
     .container{
       width: 80vw;
-      height: 70vh;
-      margin: 0 auto;
+      height: 50vh;
+      margin: auto;
+      margin-top: 5rem;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      /* background-color: #9510E6; */
     }
 
     .container:nth-of-type(2){
@@ -40,7 +40,7 @@
       z-index: 1;
     }
     .haste{
-      height: 75%;
+      height: 100%;
       width: 5%;
       position: absolute;
       z-index: 0;
@@ -149,7 +149,7 @@
       const haste = document.querySelector(".haste");
       const base = document.querySelector(".base")
       disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);
-
+      disco_heights == 0 ? disco_heights = 1 : disco_heights;
       document.querySelector(".num_mov").innerHTML = `Número mínimo de movimentos: ${Math.pow(2, num_disks)-1}`;
       
       for (let i = 0; i < num_disks; i++){
