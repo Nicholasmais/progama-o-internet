@@ -73,6 +73,36 @@
     .atraso_text {
       width: 90px; /* or any other size that works for you */
     }
+    #switch{
+      appearance: none;
+      background-color: darkblue;
+      border-radius: 30px;
+      width:90px;
+      height: 50px;
+      cursor: pointer;
+    }
+    #switch:before{
+      display: block;
+      content: "";
+      background-color: black;
+      border-radius: 30px;
+      margin-top: 5px;
+      margin-left: 5px;
+      width: 40px;
+      height: 40px;
+      transition: 0.5s;
+    }
+    #switch:checked:before{
+      display: block;
+      content: "";
+      background-color: white;
+      border-radius: 30px;
+      margin-top: 5px;
+      margin-left: 45px;
+      width: 40px;
+      height: 40px;
+      transition: 0.5s;
+    }
     @media (max-width:1200px){
       .column{
         flex-direction: column;
@@ -83,7 +113,7 @@
     }
   </style>
 </head>
-<body> 
+<body>
   <div class="container">
     <div class="torre_1"> 
       <div class="base"></div>
@@ -127,7 +157,10 @@
       <div class="tempo_est"></div>
     </div>
   </div>
-  <script>
+  <div class="row">
+    <input type="checkbox" name="switch" id="switch">
+  </div> 
+  <script>  
     document.querySelector(".solve").disabled = true;
     let pilha_1 = [];
     let pilha_2 = [];
@@ -157,21 +190,14 @@
 
         let width = -75/num_disks * i + 100;        
 
-        let red = Math.floor(Math.random()*256);
-        let green = Math.floor(Math.random()*256);
-        let blue = Math.floor(Math.random()*256);
+        //let red = Math.floor(Math.random()*256);
+        //let green = Math.floor(Math.random()*256);
+        //let blue = Math.floor(Math.random()*256);
 
-        //let red = 172/num_disks*i+ 48;
-        //let green = -245/num_disks*i+ 232;
-        //let blue = -210/num_disks*i+ 130;
-        const disco_texto = document.createElement("div");
-        disco_texto.style.cssText = `
-          padding-right:${width/3}%;
-          padding-left:${width/3}%;
-          background-color : white;
-          border-radius: 5px;
-        `;
-        disco_texto.innerHTML = `${num_disks-i}`;
+        let red = 172/num_disks*i+ 48;
+        let green = -245/num_disks*i+ 232;
+        let blue = -210/num_disks*i+ 130;
+               
         disco.style.cssText = `
           width: ${width}%;
           margin-left: calc(50% - ${width}%/2);
@@ -184,6 +210,14 @@
           box-shadow: 0 0 5px rgb(${red-30},${green-30},${blue-30});
           textShadow : 200px 200px 200px #000000;
         `
+        const disco_texto = document.createElement("div");
+        disco_texto.style.cssText = `
+          padding-right:${width/3.5}%;
+          padding-left:${width/3.5}%;
+          background-color : white;
+          border-radius: 5px;
+        `;
+        disco_texto.innerHTML = `${num_disks-i}`;
         disco.appendChild(disco_texto);
         pilha_1.push(disco);        
         const torre_1 = document.querySelector(".torre_1");
