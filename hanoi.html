@@ -13,6 +13,7 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      /* background-color: #9510E6; */
     }
 
     .container:nth-of-type(2){
@@ -114,13 +115,13 @@
 
         let width = -75/num_disks * i + 100;        
 
-        let red = Math.floor(Math.random()*256);
-        let green = Math.floor(Math.random()*256);
-        let blue = Math.floor(Math.random()*256);
+        //let red = Math.floor(Math.random()*256);
+        //let green = Math.floor(Math.random()*256);
+        //let blue = Math.floor(Math.random()*256);
 
-        //let red = 172/num_disks*i+ 48;
-        //let green = -245/num_disks*i+ 232;
-        //let blue = -210/num_disks*i+ 130;
+        let red = 172/num_disks*i+ 48;
+        let green = -245/num_disks*i+ 232;
+        let blue = -210/num_disks*i+ 130;
 
         disco.style.cssText = `
           width: ${width}%;
@@ -135,7 +136,7 @@
         }
     })
 
-    const change_haste = (atual, dest) => {
+    const change_haste = (atual, dest) => {      
       let disco;
       switch (atual){
         case 1:
@@ -296,7 +297,14 @@
               break;
           }
           break;
-      }            
+      }
+      const torre_1 = document.querySelector(".torre_1");
+      const torre_2 = document.querySelector(".torre_2");
+      if (torre_1.childElementCount == 2 && torre_2.childElementCount == 2){
+        setTimeout(() =>{
+          alert("Ganhou");
+        }, "100");
+      }
     }
   </script>
 </body>
