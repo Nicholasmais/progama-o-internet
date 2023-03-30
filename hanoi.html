@@ -58,6 +58,30 @@
       justify-content: center;
       position: relative;
     }
+    .column{      
+      width: 80vw;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10%;
+    }
+    .row{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .atraso_text {
+      width: 90px; /* or any other size that works for you */
+    }
+    @media (max-width:1200px){
+      .column{
+        flex-direction: column;
+      }
+      .row:last-of-type{
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body> 
@@ -89,16 +113,20 @@
       <button onclick="change_haste(3,2)">2</button>
     </div>
   </div>
-
-  <input type="number" name="num_disk" id="num_disk" value="3">
-  <button class="botao">Desenhar</button>
-  <label for="delayTiming">Atraso (ms) :</label>
-  <input type="number" name="delayTiming" class="delayTiming">
-  
-  <button class="solve" onclick="solve_hanoi()">Resolver!</button>
-  <div class="hint">
-    <div class="num_mov"></div>
-    <div class="tempo_est"></div>
+  <div class="column">
+    <div class="row">
+      <input type="number" name="num_disk" id="num_disk" value="3">
+      <button class="botao">Desenhar</button>
+    </div>
+    <div class="row">
+      <label for="delayTiming" class="atraso_text">Atraso (ms):</label>
+      <input type="number" name="delayTiming" class="delayTiming">
+      <button class="solve" onclick="solve_hanoi()">Resolver!</button>
+    </div>
+    <div class="row">
+      <div class="num_mov"></div>
+      <div class="tempo_est"></div>
+    </div>
   </div>
   <script>
     document.querySelector(".solve").disabled = true;
