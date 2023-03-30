@@ -215,7 +215,7 @@
                 if (parseFloat(disco.style.width) < parseFloat(disco_inferior.style.width)){                               
                   pilha_1.push(disco);
                   const torre_1 = document.querySelector(".torre_1");
-                  const num_items_na_pilha = pilha_1.length - 2;
+                  const num_items_na_pilha = pilha_1.length - 1;
                   disco.style.bottom = `calc(5% + ${disco_heights*num_items_na_pilha}px)`;
                   torre_1.appendChild(disco);
                 }
@@ -246,7 +246,7 @@
               if (!disco_inferior){
                 pilha_1.push(disco);
                 const torre_1 = document.querySelector(".torre_1");
-                const num_items_na_pilha = pilha_1.length - 2;
+                const num_items_na_pilha = pilha_1.length - 1;
                 disco.style.bottom = `calc(5% + ${disco_heights*num_items_na_pilha}px)`;
                 torre_1.appendChild(disco);
               }
@@ -254,7 +254,7 @@
                 if (parseFloat(disco.style.width) < parseFloat(disco_inferior.style.width)){                               
                   pilha_1.push(disco);
                   const torre_1 = document.querySelector(".torre_1");
-                  const num_items_na_pilha = pilha_1.length - 2;
+                  const num_items_na_pilha = pilha_1.length - 1;
                   disco.style.bottom = `calc(5% + ${disco_heights*num_items_na_pilha}px)`;
                   torre_1.appendChild(disco);
                 }
