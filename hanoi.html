@@ -46,7 +46,6 @@
       z-index: 0;
       margin-left: calc(50% - 5%/2);
       background-color: black;
-      z-index: 3;
     }
     .disco {
       position: absolute;
@@ -165,14 +164,27 @@
         //let red = 172/num_disks*i+ 48;
         //let green = -245/num_disks*i+ 232;
         //let blue = -210/num_disks*i+ 130;
-
+        const disco_texto = document.createElement("div");
+        disco_texto.style.cssText = `
+          padding-right:${width/3}%;
+          padding-left:${width/3}%;
+          background-color : white;
+          border-radius: 5px;
+        `;
+        disco_texto.innerHTML = `${num_disks-i}`;
         disco.style.cssText = `
           width: ${width}%;
           margin-left: calc(50% - ${width}%/2);
           bottom: calc(5% + ${disco_heights*i}px);
           background-color: rgb(${red},${green},${blue});
           height:${disco_heights}px;
+          display: flex;
+          align-items: center; 
+          justify-content: center;
+          box-shadow: 0 0 5px rgb(${red-30},${green-30},${blue-30});
+          textShadow : 200px 200px 200px #000000;
         `
+        disco.appendChild(disco_texto);
         pilha_1.push(disco);        
         const torre_1 = document.querySelector(".torre_1");
         torre_1.appendChild(disco);
