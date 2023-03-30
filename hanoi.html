@@ -60,7 +60,7 @@
     }
   </style>
 </head>
-<body>
+<body> 
   <div class="container">
     <div class="torre_1"> 
       <div class="base"></div>
@@ -89,15 +89,27 @@
       <button onclick="change_haste(3,2)">2</button>
     </div>
   </div>
+
   <input type="number" name="num_disk" id="num_disk" value="3">
   <button class="botao">Desenhar</button>
-  <script>    
+  <label for="delayTiming">Atraso (ms) :</label>
+  <input type="number" name="delayTiming" class="delayTiming">
+  
+  <button class="solve" onclick="solve_hanoi()">Resolver!</button>
+  <div class="hint">
+    <div class="num_mov"></div>
+    <div class="tempo_est"></div>
+  </div>
+  <script>
+    document.querySelector(".solve").disabled = true;
     let pilha_1 = [];
     let pilha_2 = [];
     let pilha_3 = [];
-    
+
     const btn = document.querySelector(".botao");
     btn.addEventListener('click', () =>{
+      document.querySelector(".solve").disabled = false;
+      
       pilha_1 = [];
       pilha_2 = [];
       pilha_3 = [];
@@ -108,7 +120,10 @@
       const num_disks = document.querySelector("#num_disk").value;
       const haste = document.querySelector(".haste");
       const base = document.querySelector(".base")
-      disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);   
+      disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);
+
+      document.querySelector(".num_mov").innerHTML = `Número mínimo de movimentos: ${Math.pow(2, num_disks)-1}`;
+      
       for (let i = 0; i < num_disks; i++){
         const disco = document.createElement("div");
         disco.className = `disco disco_${i+1}`;
@@ -305,6 +320,30 @@
           alert("Ganhou");
         }, "100");
       }
+    }
+  
+    const solve_hanoi = () => {
+      const num_disks = document.querySelector("#num_disk").value;
+      const delay = document.querySelector(".delayTiming").value;
+      document.querySelector(".tempo_est").innerHTML = `Tempo estimado: ${(Math.pow(2, num_disks)-1)*delay/1000}s`;
+      hanoi(num_disks, 1, 3, 2, delay);
+    }
+
+    const hanoi = async(n, origem, destino, auxiliar, delay) => {
+      if (n === 1) {
+        //console.log(`Mova o disco ${n} da torre ${origem} para a torre ${destino}`);
+        await change_haste_delay(origem, destino, delay);
+      } else {
+        await hanoi(n - 1, origem, auxiliar, destino, delay);
+        //console.log(`Mova o disco ${n} da torre ${origem} para a torre ${destino}`);
+        await change_haste_delay(origem, destino, delay);
+        await hanoi(n - 1, auxiliar, destino, origem, delay);
+      }
+    }
+
+    const change_haste_delay = async(atual, dest, delay) => {
+      await new Promise(resolve => setTimeout(resolve, delay));
+      change_haste(atual, dest);
     }
   </script>
 </body>
