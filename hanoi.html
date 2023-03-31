@@ -155,7 +155,7 @@
     </div>
     <div class="row">
       <label for="delayTiming" class="atraso_text">Atraso (ms):</label>
-      <input type="number" name="delayTiming" class="delayTiming">
+      <input type="number" name="delayTiming" class="delayTiming" min="10" value="500">
       <button class="solve" onclick="solve_hanoi()">Resolver!</button>
     </div>
     <div class="row">
@@ -440,12 +440,15 @@
     switch_input.addEventListener("click", () =>{
       const discos = document.querySelectorAll('[id^="disco_"]');
       discos.forEach((disco, i) => {
-        update_color_disks(disco, i);
+        update_color_disks(disco, i, true);
       });     
     });
 
-    const update_color_disks = (disco, disco_number) =>{
+    const update_color_disks = (disco, disco_number, color_only = false) =>{
+      const num_disks = document.querySelector("#num_disk").value;
       const switch_input = document.getElementById("switch").checked;
+      disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);
+      disco_heights == 0 ? disco_heights = 1 : disco_heights;
       let width = -75/num_disks * disco_number + 100;
       let red, green, blue;
       if (switch_input){
@@ -458,7 +461,12 @@
         green = -245/num_disks*disco_number+ 232;
         blue = -210/num_disks*disco_number+ 130;
       }
-      disco.style.cssText = `
+      if (color_only){
+        disco.style.backgroundColor = `rgb(${red},${green},${blue})`;
+        disco.style.boxShadow = `0 0 5px rgb(${red-30},${green-30},${blue-30})`;        
+      }
+      else{
+        disco.style.cssText = `
           width: ${width}%;
           margin-left: calc(50% - ${width}%/2);
           bottom: calc(5% + ${disco_heights*disco_number}px);
@@ -469,7 +477,8 @@
           justify-content: center;
           box-shadow: 0 0 5px rgb(${red-30},${green-30},${blue-30});
           textShadow : 200px 200px 200px #000000;
-        `
+          `
+      }
     }
   </script>
 </body>
