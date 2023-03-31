@@ -80,11 +80,13 @@
       width:90px;
       height: 50px;
       cursor: pointer;
+      transition: 0.5s;
     }
     #switch:before{
       display: block;
       content: "";
-      background-color: black;
+      color:white;
+      background: linear-gradient(90deg, #30e883, #dc0d50 );
       border-radius: 30px;
       margin-top: 5px;
       margin-left: 5px;
@@ -93,9 +95,13 @@
       transition: 0.5s;
     }
     #switch:checked:before{
-      display: block;
-      content: "";
-      background-color: white;
+      display: flex;
+      content: "?";
+      justify-content: center;
+      align-items: center;
+      background: conic-gradient(red, orange, yellow, green, blue, indigo, violet, red);
+      color:white;
+      font-weight: bold;
       border-radius: 30px;
       margin-top: 5px;
       margin-left: 45px;
@@ -160,7 +166,7 @@
   <div class="row">
     <input type="checkbox" name="switch" id="switch">
   </div> 
-  <script>  
+  <script>
     document.querySelector(".solve").disabled = true;
     let pilha_1 = [];
     let pilha_2 = [];
@@ -179,7 +185,7 @@
       });
       const num_disks = document.querySelector("#num_disk").value;
       const haste = document.querySelector(".haste");
-      const base = document.querySelector(".base")
+      const base = document.querySelector(".base");
       disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);
       disco_heights == 0 ? disco_heights = 1 : disco_heights;
       document.querySelector(".num_mov").innerHTML = `Número mínimo de movimentos: ${Math.pow(2, num_disks)-1}`;
@@ -187,29 +193,11 @@
       for (let i = 0; i < num_disks; i++){
         const disco = document.createElement("div");
         disco.className = `disco disco_${i+1}`;
-
+        disco.id = `disco_${i+1}`;
         let width = -75/num_disks * i + 100;        
+        
+        update_color_disks(disco, i);
 
-        //let red = Math.floor(Math.random()*256);
-        //let green = Math.floor(Math.random()*256);
-        //let blue = Math.floor(Math.random()*256);
-
-        let red = 172/num_disks*i+ 48;
-        let green = -245/num_disks*i+ 232;
-        let blue = -210/num_disks*i+ 130;
-               
-        disco.style.cssText = `
-          width: ${width}%;
-          margin-left: calc(50% - ${width}%/2);
-          bottom: calc(5% + ${disco_heights*i}px);
-          background-color: rgb(${red},${green},${blue});
-          height:${disco_heights}px;
-          display: flex;
-          align-items: center; 
-          justify-content: center;
-          box-shadow: 0 0 5px rgb(${red-30},${green-30},${blue-30});
-          textShadow : 200px 200px 200px #000000;
-        `
         const disco_texto = document.createElement("div");
         disco_texto.style.cssText = `
           padding-right:${width/3.5}%;
@@ -440,6 +428,48 @@
     const change_haste_delay = async(atual, dest, delay) => {
       await new Promise(resolve => setTimeout(resolve, delay));
       change_haste(atual, dest);
+    }
+  
+    const switch_input = document.getElementById("switch");
+    const num_disks = document.querySelector("#num_disk").value;
+    const haste = document.querySelector(".haste");
+    const base = document.querySelector(".base");
+    disco_heights = Math.floor((haste.offsetHeight - base.offsetHeight) / num_disks);
+    disco_heights == 0 ? disco_heights = 1 : disco_heights;
+    
+    switch_input.addEventListener("click", () =>{
+      const discos = document.querySelectorAll('[id^="disco_"]');
+      discos.forEach((disco, i) => {
+        update_color_disks(disco, i);
+      });     
+    });
+
+    const update_color_disks = (disco, disco_number) =>{
+      const switch_input = document.getElementById("switch").checked;
+      let width = -75/num_disks * disco_number + 100;
+      let red, green, blue;
+      if (switch_input){
+        red = Math.floor(Math.random()*256);
+        green = Math.floor(Math.random()*256);
+        blue = Math.floor(Math.random()*256);                              
+      }
+      else{
+        red = 172/num_disks*disco_number+ 48;
+        green = -245/num_disks*disco_number+ 232;
+        blue = -210/num_disks*disco_number+ 130;
+      }
+      disco.style.cssText = `
+          width: ${width}%;
+          margin-left: calc(50% - ${width}%/2);
+          bottom: calc(5% + ${disco_heights*disco_number}px);
+          background-color: rgb(${red},${green},${blue});
+          height:${disco_heights}px;
+          display: flex;
+          align-items: center; 
+          justify-content: center;
+          box-shadow: 0 0 5px rgb(${red-30},${green-30},${blue-30});
+          textShadow : 200px 200px 200px #000000;
+        `
     }
   </script>
 </body>
