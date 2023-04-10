@@ -1,6 +1,6 @@
 <?php 
 
-class Produto {
+class Produto implements JsonSerializable{
   private $type;
   private $nome;
   private $descricao;
@@ -75,6 +75,18 @@ class Produto {
 
   public function setImagem($imagem) {
     $this->imagem = $imagem;
+  }
+
+  public function jsonSerialize() {
+    return [
+      'type' => $this->type,
+      'nome' => $this->nome,
+      'descricao' => $this->descricao,
+      'quantidade' => $this->quantidade,
+      'preco' => $this->preco,
+      'estoque' => $this->estoque,
+      'imagem' => $this->imagem
+    ];
   }
 }
 ?>

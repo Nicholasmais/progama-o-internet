@@ -1,6 +1,5 @@
 <?php
   include "banco.php";
-  include "produto.php";
   $banco = new Banco();
   $json = $_POST['json'];
   $obj = json_decode($json);

@@ -1,5 +1,6 @@
 <?php 
 include "pessoa.php";
+include "produto.php";
 class Banco{
   private $host = "127.0.0.1";
   private $user = "root";
@@ -109,6 +110,45 @@ class Banco{
       return ["erro"=>$e, "status"=>0];
     }
   }
+
+  public function get_products_by_id($id){   
+    $stmt = $this->con->prepare("Select * from produto where id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();        
+    $linha = mysqli_fetch_object($result);    
+    $produto = new Produto(
+      $linha->type,
+      $linha->nome,
+      $linha->descricao,
+      $linha->quantidade,
+      $linha->preco,
+      $linha->estoque,
+      $linha->imagem
+    );
+    return $produto;
+  }
+
+  public function get_all_products(){
+    $stmt = $this->con->prepare("SELECT * FROM produto");
+    $stmt->execute();
+    $result = $stmt->get_result();        
+    $produtos = array();
+
+    while ($linha = mysqli_fetch_object($result)) {
+      $produto = new Produto(
+        $linha->type,
+        $linha->nome,
+        $linha->descricao,
+        $linha->quantidade,
+        $linha->preco,
+        $linha->estoque,
+        $linha->imagem
+      );
+      $produtos[] = $produto;
+    }
+    return $produtos;
+}
 
   public function get_pessoa(){   
     $stmt = $this->con->prepare("Select * from pessoa");

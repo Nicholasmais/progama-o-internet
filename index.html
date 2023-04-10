@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    .form{
+    .form, .tabela-produtos{
       width: 80vw;
       margin: 0 auto;
     }
@@ -14,6 +14,10 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       border: 2px solid black;
+    }
+    img {
+      max-width: 50px;
+      height: auto;
     }
   </style>
 </head>
@@ -23,7 +27,17 @@
   <button onclick="show()">Mostrar</button>
   <div class="form">
   </div>
-
+  <table class="tabela-produtos">
+    <tr>
+      <th>Type</th>
+      <th>Nome</th>
+      <th>Descrição</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
+      <th>Estoque</th>
+      <th>Imagem</th>
+    </tr>
+  </table>
   <script>
     const ajax = new XMLHttpRequest();
     const div_with_form = document.querySelector(".form");
@@ -136,12 +150,48 @@
         ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         ajax.onload = () => {
           console.log(ajax.responseText);
+          update_data();
         }
         ajax.send(`json=${encodeURIComponent(JSON.stringify(arr_obj))}`);
         //console.log(`json=${encodeURIComponent(JSON.stringify(arr_obj))}`);
       }
       div_with_form.appendChild(botao);
     }
+
+    const update_data = (id = '') => {
+      let url = 'get_products.php';
+      if (id != ''){
+        url += '?id='+id;
+      }
+      ajax.open('GET', url);
+      ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      ajax.onload = () => {
+        const produtos = JSON.parse(ajax.responseText);
+        console.log(produtos);
+        update_table(produtos);
+      }
+      ajax.send();
+    }
+
+    const update_table = (objs) => {
+      let tabela = document.querySelector('.tabela-produtos');
+      while (tabela.rows.length > 1) {
+        tabela.deleteRow(-1);
+      }
+      objs.forEach(produto => {
+        let linha = tabela.insertRow();
+        linha.insertCell().innerHTML = produto.type;
+        linha.insertCell().innerHTML = produto.nome;
+        linha.insertCell().innerHTML = produto.descricao;
+        linha.insertCell().innerHTML = produto.quantidade;
+        linha.insertCell().innerHTML = produto.preco;
+        linha.insertCell().innerHTML = produto.estoque;
+        linha.insertCell().innerHTML = `<img src="${produto.imagem}" alt="${produto.nome}">`;
+      }
+    )};
+    
+    update_data();
+
   </script>
 </body>
 </html>
