@@ -3,9 +3,9 @@ include "pessoa.php";
 class Banco{
   private $host = "127.0.0.1";
   private $user = "root";
-  private $password = "";
+  private $password = "648297315Nf!";
   private $banco = "pessoa";
-  private $porta = "3307";
+  private $porta = "3306";
   private $con;
 
   public function __construct(){    
@@ -19,6 +19,44 @@ class Banco{
     if ( $this->con->connect_error) {
       die("Falha ao conectar: " .  $this->con->connect_error);
     }      
+  }
+
+  public function add_produto($produto){
+    try{
+      $tipo = $produto->getType();
+      $nome = $produto->getNome();
+      $descricao = $produto->getDescricao();
+      $qtd = $produto->getQuantidade();
+      $preco = $produto->getPreco();
+      $estoque = $produto->getEstoque();
+      $img = $produto->getImagem();
+            
+      $stmt = $this->con->prepare("INSERT INTO produto (type, nome, descricao, quantidade, preco, estoque, imagem) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      $stmt->bind_param(
+        "ssssdis",
+        $tipo,
+        $nome,
+        $descricao,
+        $qtd,
+        $preco,
+        $estoque,
+        $img
+      );
+    
+      $stmt->execute();
+      $resposta = array();
+      $resposta['status'] = 'sucesso';
+      $resposta['mensagem'] = 'Produto cadastrado com sucesso';
+      header('Content-Type: application/json');
+      echo json_encode($resposta);      
+    }
+    catch (Exception $e){
+      $resposta = array();
+      $resposta['status'] = 'erro';
+      $resposta['mensagem'] = $e->getMessage();
+      header('Content-Type: application/json');
+      echo json_encode($resposta); 
+    }
   }
 
   public function add_pessoa($pes){

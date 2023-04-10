@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .form{
+      width: 80vw;
+      margin: 0 auto;
+    }
+    .row_inputs{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 2px solid black;
+    }
+  </style>
+</head>
+<body>
+  cadastrar produtos:
+  <input type="number" name="" id=""  class="teste">
+  <button onclick="show()">Mostrar</button>
+  <div class="form">
+  </div>
+
+  <script>
+    const ajax = new XMLHttpRequest();
+    const div_with_form = document.querySelector(".form");
+    const show = () => {
+      const num_add_items = document.querySelector(".teste").value;
+      const divs_to_remove = document.querySelectorAll('.row_inputs');
+      divs_to_remove.forEach(div => {
+        div.remove();
+      });
+      for( let i = 0; i < num_add_items; i++){
+        divs = document.createElement("div");
+        divs.setAttribute('class', 'row_inputs'); 
+        divs.setAttribute("id", `div_${i+1}`);  
+        
+        const labelType = document.createElement('label');
+        labelType.for = `type_${i+1}`
+        labelType.textContent = 'Tipo:'
+        const inputType = document.createElement('input');
+        inputType.type = 'text'
+        inputType.id = `type_${i+1}`
+        inputType.name = `type_${i+1}`
+
+        const labelNome = document.createElement('label');
+        labelNome.for = `nome_${i+1}`
+        labelNome.textContent = 'Nome:'
+        const inputNome = document.createElement('input');
+        inputNome.type = 'text'
+        inputNome.id = `nome_${i+1}`
+        inputNome.name = `nome_${i+1}`
+
+        const labelDesc = document.createElement('label');
+        labelDesc.for = `desc_${i+1}`
+        labelDesc.textContent = 'Descrição:'
+        const inputDesc = document.createElement('input');
+        inputDesc.type = 'text'
+        inputDesc.id = `desc_${i+1}`
+        inputDesc.name = `desc_${i+1}`
+
+        const labelQtd = document.createElement('label');
+        labelQtd.for = `qtd_${i+1}`
+        labelQtd.textContent = 'Quantidade:'
+        const inputQtd = document.createElement('input');
+        inputQtd.type = 'text'
+        inputQtd.id = `qtd_${i+1}`
+        inputQtd.name = `qtd_${i+1}`
+
+        const labelPreco = document.createElement('label');
+        labelPreco.for = `preco_${i+1}`
+        labelPreco.textContent = 'Preço:'
+        const inputPreco = document.createElement('input');
+        inputPreco.type = 'text'
+        inputPreco.id = `preco_${i+1}`
+        inputPreco.name = `preco_${i+1}`
+
+        const labelEstoque = document.createElement('label');
+        labelEstoque.for = `estoque_${i+1}`
+        labelEstoque.textContent = 'Estoque:'
+        const inputEstoque = document.createElement('input');
+        inputEstoque.type = 'text'
+        inputEstoque.id = `estoque_${i+1}`
+        inputEstoque.name = `estoque_${i+1}`
+
+        const labelImg = document.createElement('label');
+        labelImg.for = `img_${i+1}`
+        labelImg.textContent = 'Imagem:'
+        const inputImg = document.createElement('input');
+        inputImg.type = 'text'
+        inputImg.id = `img_${i+1}`
+        inputImg.name = `img_${i+1}`
+
+
+        divs.appendChild(labelType);
+        divs.appendChild(inputType);
+
+        divs.appendChild(labelNome);
+        divs.appendChild(inputNome);
+
+        divs.appendChild(labelDesc);
+        divs.appendChild(inputDesc);
+
+        divs.appendChild(labelQtd);
+        divs.appendChild(inputQtd);
+
+        divs.appendChild(labelPreco);
+        divs.appendChild(inputPreco);
+
+        divs.appendChild(labelEstoque);
+        divs.appendChild(inputEstoque);
+
+        divs.appendChild(labelImg);
+        divs.appendChild(inputImg);
+        div_with_form.appendChild(divs);
+      }
+      const botao = document.createElement("button");
+      botao.textContent = "Cadastrar";
+      botao.onclick =() => {
+        const arr_obj = [];
+        for( let i = 0; i < num_add_items; i++){
+          const obj = {}
+          obj[`type`] = document.getElementById(`type_${i+1}`).value;
+          obj[`nome`] = document.getElementById(`nome_${i+1}`).value;
+          obj[`desc`] = document.getElementById(`desc_${i+1}`).value;
+          obj[`qtd`] = document.getElementById(`qtd_${i+1}`).value;
+          obj[`preco`] = document.getElementById(`preco_${i+1}`).value;
+          obj[`estoque`] = document.getElementById(`estoque_${i+1}`).value;
+          obj[`img`] = encodeURIComponent(document.getElementById(`img_${i+1}`).value);
+          arr_obj.push(obj);     
+        }
+        ajax.open('POST', 'cadastrar_produtos.php');
+        ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        ajax.onload = () => {
+          console.log(ajax.responseText);
+        }
+        ajax.send(`json=${encodeURIComponent(JSON.stringify(arr_obj))}`);
+        //console.log(`json=${encodeURIComponent(JSON.stringify(arr_obj))}`);
+      }
+      div_with_form.appendChild(botao);
+    }
+  </script>
+</body>
+</html>
