@@ -7,12 +7,17 @@
   <title>Document</title>
   <style>
     .forehead{
+      position: relative;
       margin: 0 auto;
-      margin-top: calc(50vh - 50px);
+      margin-top: calc(50vh - 75px);
+      height: 200px;
+      width: 300px;
+      background-color: aquamarine;
+    }
+    .eyes{
       display: flex;
       flex-direction: row;
       justify-content: center;
-      background-color: aquamarine;
     }
     .container{
       position: relative;
@@ -50,26 +55,42 @@
       height: 5px;
       background-color: white;
     }
+    .mouth{
+      position: relative;
+      margin: 0 auto;
+      height: 5px;
+      width: 100px;
+      margin-top: calc(5%);
+      background-color: #000;
+    }
   </style>
 </head>
 <body>
   
   <div class="forehead">
-    <div class="container left">
-      <div class="eye-left"> 
-        <div class="eye-ball">
+      <div class="eyes">
+      <div class="container left">
+        <div class="eye-left"> 
+          <div class="eye-ball">
+          </div>
+        </div>
+      </div>    
+      <div class="container right">
+        <div class="eye-right"> 
+          <div class="eye-ball">
+          </div>
         </div>
       </div>
-    </div>    
-    <div class="container right">
-      <div class="eye-right"> 
-        <div class="eye-ball">
-        </div>
-      </div>
+    </div>
+    <div class="mouth">
+
     </div>
   </div>
 
   <script>
+    const mouth = document.querySelector(".mouth");
+    const forehead = document.querySelector(".forehead");
+
     const container_left = document.querySelector(".container.left");
     const container_right = document.querySelector(".container.right");
     const rect_left = container_left.getBoundingClientRect();
@@ -129,6 +150,16 @@
 
     })
     
+
+    forehead.addEventListener("mousemove", () =>{
+      mouth.style.height = '50px';
+      mouth.style.borderRadius="100%";
+    });
+
+    forehead.addEventListener("mouseout", () =>{
+      mouth.style.height = '5px';
+      mouth.style.borderRadius="0%";
+    });
   </script>
 </body>
 </html>
